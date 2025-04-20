@@ -48,8 +48,16 @@ if uploaded_file:
     st.subheader("🌥 Word Cloud")
     filtered_msgs = df[~df['Message'].str.contains('<Media omitted>|http')]
     text = ' '.join(filtered_msgs['Message'].tolist())
+ if text.strip():  # Only proceed if text has content
     wordcloud = WordCloud(width=800, height=400, background_color='white').generate(text)
     fig, ax = plt.subplots(figsize=(10, 4))
+    ax.imshow(wordcloud, interpolation='bilinear')
+    ax.axis("off")
+    st.subheader("🌥 Word Cloud of Frequent Words")
+    st.pyplot(fig)
+else:
+    st.warning("⚠️ Not enough words to generate a Word Cloud. Please upload a longer chat file.")
+
     ax.imshow(wordcloud)
     ax.axis("off")
     st.pyplot(fig)
